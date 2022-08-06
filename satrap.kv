@@ -1,0 +1,118 @@
+#:kivy 2.1.0
+<TabbedWindow>:
+    do_default_tab: False
+
+    AddTab:
+        text: "Add"
+
+        AddPage:
+    
+    ListTab:
+        text: "Observer"
+
+        ListPage:
+    
+
+##### Add page section
+
+<AddPage>:
+    padding: dp(20)
+    spacing: dp(10)
+    orientation: "vertical"
+
+    InputEntryLayout:
+        id: input_name
+        Label:
+            text:"Nam va Family"
+    InputEntryLayout:
+        id: input_account
+        Label:
+            text:"Account"
+    InputEntryLayout:
+        id: input_mobile_no
+        Label:
+            text:"Mobile No"
+    InputEntryLayout:
+        id: input_password
+        Label:
+            text:"Kalame Oboor"
+    InputEntryLayout:
+        id: input_email
+        Label:
+            text:"Email"
+
+    ## Add button
+    Button:
+        text: "Add"
+        # Pass all TextInput input texts
+        on_press: root.add_button_pressed(input_email.children[1].text, input_password.children[1].text, input_mobile_no.children[1].text, input_account.children[1].text, input_name.children[1].text)
+
+# Each text input in input form
+<InputEntryLayout>:
+    # Child 0 ---> Label
+    # Child 1 ---> TextInput
+    orientation: "horizontal"
+    TextInput:
+        multiline: False
+    
+
+
+##### List page section
+
+<ListPage>:
+    orientation: "vertical"
+
+    padding: 20
+    spacing: 10
+
+    ## SearchBox
+    BoxLayout:
+        size_hint: 1, 0.1
+        orientation: "horizontal"
+        spacing: dp(5)
+        TextInput:
+            size_hint: 0.9, 1
+        Button:
+            size_hint: 0.1, 1
+            text: "search"
+
+    ## ListBox
+    ScrollView:
+        GridLayout:
+            cols: 1
+            size_hint: 1, None
+            height: self.minimum_height
+            CDataLayout:
+            CDataLayout:
+            CDataLayout:
+            CDataLayout:
+            CDataLayout:
+            CDataLayout:
+            CDataLayout:
+            CDataLayout:
+            CDataLayout:
+            CDataLayout:
+           
+
+<CDataLayout>:
+    size_hint: 1, None
+    height: dp(50)
+    orientation:"horizontal"
+    spacing: dp(5)
+    padding: dp(5)
+    Label:
+        size_hint: 0.6, 1.0
+        text: "bla bla"
+    Button:
+        size_hint: 0.1, 1.0
+        text: "copy"
+    Button:
+        size_hint: 0.1, 1.0
+        text: "observer"
+    Button:
+        size_hint: 0.1, 1.0
+        text: "delete"
+    Button:
+        size_hint: 0.1, 1.0
+        text: ".-."
+    
