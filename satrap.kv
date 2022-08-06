@@ -2,15 +2,15 @@
 <TabbedWindow>:
     do_default_tab: False
 
-    AddTab:
-        text: "Add"
-
-        AddPage:
-    
     ListTab:
         text: "Observer"
 
         ListPage:
+    
+    AddTab:
+        text: "Add"
+
+        AddPage:
     
 
 ##### Add page section
@@ -45,7 +45,7 @@
     Button:
         text: "Add"
         # Pass all TextInput input texts
-        on_press: root.add_button_pressed(input_email.children[1].text, input_password.children[1].text, input_mobile_no.children[1].text, input_account.children[1].text, input_name.children[1].text)
+        on_press: root.add_button_pressed(input_email.children[1], input_password.children[1], input_mobile_no.children[1], input_account.children[1], input_name.children[1])
 
 # Each text input in input form
 <InputEntryLayout>:
@@ -75,24 +75,28 @@
         Button:
             size_hint: 0.1, 1
             text: "search"
+    RecordsHeadingLayout:
 
     ## ListBox
     ScrollView:
-        GridLayout:
+        RecordsGridLayout:
             cols: 1
             size_hint: 1, None
-            height: self.minimum_height
-            CDataLayout:
-            CDataLayout:
-            CDataLayout:
-            CDataLayout:
-            CDataLayout:
-            CDataLayout:
-            CDataLayout:
-            CDataLayout:
-            CDataLayout:
-            CDataLayout:
+            height: self.minimum_height                
+            
+            #CDataLayout:
+            #CDataLayout:
+            #CDataLayout:
+            #CDataLayout:
+            #CDataLayout:
+            #CDataLayout:
+            #CDataLayout:
+            #CDataLayout:
+            #CDataLayout:
+            #CDataLayout:
            
+
+
 
 <CDataLayout>:
     size_hint: 1, None
@@ -100,19 +104,79 @@
     orientation:"horizontal"
     spacing: dp(5)
     padding: dp(5)
-    Label:
-        size_hint: 0.6, 1.0
-        text: "bla bla"
+
     Button:
-        size_hint: 0.1, 1.0
-        text: "copy"
+        size_hint: None, None
+        size: dp(40), dp(40)
+        text: "C"
     Button:
-        size_hint: 0.1, 1.0
-        text: "observer"
+        size_hint: None, None
+        size: dp(40), dp(40)
+        text: "D"
     Button:
-        size_hint: 0.1, 1.0
-        text: "delete"
-    Button:
-        size_hint: 0.1, 1.0
-        text: ".-."
+        size_hint: None, None
+        size: dp(40), dp(40)
+        text: "O"
+
+    #Label:
+    #    size_hint: 0.6, 1.0
+    #    text: "bla bla"
+    #Button:
+    #    size_hint: 0.1, 1.0
+    #    text: "copy"
+    #Button:
+    #    size_hint: 0.1, 1.0
+    #    text: "observer"
+    #Button:
+    #    size_hint: 0.1, 1.0
+    #    text: "delete"
+    #Button:
+    #    size_hint: 0.1, 1.0
+    #    text: ".-."
+
+<RecordsHeadingLabel@Label>:
+    size_hint: 0.2, 1.0
+    bold: True
+    font_size: dp(20)
+    outline_color: 0,0,0,1
+    outline_width: 1
+    canvas:
+        Color:
+            rgba: 0,0,0,1
+        Line:
+            points: (root.x, root.y, root.x + root.width, self.y)
+            
+<RecordsHeadingLayout@BoxLayout>:
+    size_hint: 1, None
+    height: dp(50)
+    orientation:"horizontal"
+    spacing: dp(5)
+    padding: dp(5)
+
+    # A place holder for aligning rows with the heading
     
+    RecordsHeadingLabel:
+        size_hint: None, None
+        size: dp(130), dp(40)
+        disabled: True
+        text: "Actions"
+    #Button:
+    #    size_hint: None, None
+    #    size: dp(130), dp(40)
+    #    disabled: True
+        
+
+    RecordsHeadingLabel:
+        text: "Name"
+       
+    RecordsHeadingLabel:
+        text: "Email"
+          
+    RecordsHeadingLabel:
+        text: "Phone"
+        
+    RecordsHeadingLabel:
+        text: "Account"
+            
+    RecordsHeadingLabel:
+        text: "Password"

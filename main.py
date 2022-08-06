@@ -1,11 +1,8 @@
-from curses import curs_set
-from unicodedata import name
 from kivy.app import App
 from kivy.uix.widget import Widget
 from kivy.uix.label import Label
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.gridlayout import GridLayout
-from kivy.uix.scrollview import ScrollView
 from kivy.uix.tabbedpanel import TabbedPanel, TabbedPanelItem
 import sqlite3
 
@@ -71,9 +68,9 @@ class DBConnection():
             Returns a [list] containing all of these records.
         """
 
-        query = "SELECT * FROM account_info"
+        query = "SELECT name, email, phone, account, password FROM account_info"
         self.cursor.execute(query)
-        return self.cursor.fetchall()
+        return  self.cursor.fetchall()
 
     def close_db_connection(self):
         """
@@ -90,10 +87,80 @@ class DBConnection():
 
 
 class CDataLayout(BoxLayout):
-    pass
+    """
+    A box layout for a single record of account_info.
+    Contains account's info plus buttons for modifying, deleting, copying, and showing full details.
+    """
+    def __init__(self, data_record, **kwargs):
+        """
+        data_record contains account information as a dictionary. This dictionary has 5 keys:
+            name
+            email
+            phone
+            account
+            password
+        """
+        self.name = data_record['name']
+        self.email = data_record['email']
+        self.phone = data_record['phone']
+        self.account = data_record['account']
+        self.password = data_record['password']
+
+        super().__init__(**kwargs)
+        self._add_row(data_record)
+
+    def _add_row(self, data_record):
+        """
+            Adds the row to the scrollview's list
+        """
+        self.add_widget(Label(text=self.name))
+        self.add_widget(Label(text=self.email))
+        self.add_widget(Label(text=self.phone))
+        self.add_widget(Label(text=self.account))
+        self.add_widget(Label(text=self.password))
+
+
 
 class InputEntryLayout(BoxLayout):
     pass
+
+class RecordsGridLayout(GridLayout):
+    """
+    The GridLayout a series of CDataLayout box layouts each containing a record of account_info.
+
+    data_rows list contains a list of CDataLayouts that represent a row in the account info list
+    """
+    
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)        
+        
+        # Retrive records from database
+        account_records = db_object.fetch_all_records()
+        
+        self.data_rows = []
+
+        for record in account_records:
+            # Convert columns to string
+            record = list(map(str, record))
+
+            self.add_new_row(record)
+        
+
+    def add_new_row(self, record):
+        """
+            Gets a list that contains account information, turns the list into
+            a dictionary for making referencing easier, then creates 
+            CDataLayout which contains the record's data plus controllers
+        """
+        # Turn the list into a dictionary for making referencing easier
+        record = dict(zip(['name','email','phone','account','password'], record))
+            
+        # Create CDataLayout which contains the record's data plus controllers
+        new_row = CDataLayout(record)
+        self.data_rows.append(new_row)
+        self.add_widget(new_row)
+
 
 class AddPage(BoxLayout):
     """
@@ -104,19 +171,35 @@ class AddPage(BoxLayout):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
     
-    def add_button_pressed(self, email_str, pass_str, mobile_no_str, account_str, name_str):
+    def add_button_pressed(self, email_widget, pass_widget, mobile_no_widget, account_widget, name_widget, ptr_to_list_grid):
         """
-        Arguments: Email Address, Password, Mobile Number, Account Address, First Name and Last name
+        Arguments: TextInput Widget of Email Address, Password, Mobile Number, Account Address, First Name and Last name
         
         Check text inputs. If they are not empty, and they are valid, create a new account info.
         """
-        print("add pressed", email_str, pass_str, mobile_no_str, account_str, name_str)
 
+        # Get text from TextInput widgets
+        email_str = email_widget.text
+        pass_str = pass_widget.text
+        mobile_no_str = mobile_no_widget.text
+        account_str = account_widget.text
+        name_str = name_widget.text
+        print("add pressed", email_str, pass_str, mobile_no_str, account_str, name_str)
+        
         # Check validity
         if email_str and pass_str and mobile_no_str and account_str and name_str:
             # Create the new account info
             db_object.add_new_account(name_str, email_str, mobile_no_str, account_str, pass_str)
-            pass
+            
+            # Add new row to the scrollview's list
+
+
+            # Clear TextInput forms
+            email_widget.text = ""
+            pass_widget.text = ""
+            mobile_no_widget.text = ""
+            account_widget.text = ""
+            name_widget.text = ""
         else:
             self._show_error_()
 
@@ -155,5 +238,4 @@ if __name__ == '__main__':
     try:
         SatrapApp().run()
     finally:
-        print(db_object.fetch_all_records())
         db_object.close_db_connection()
