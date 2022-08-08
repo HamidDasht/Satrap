@@ -8,6 +8,9 @@ import sqlite3
 
 DBNAME = "satrap_test.db"
 
+# A list of newly added account informations
+DB_JOURNAL = []
+
 class DBConnection():
     def __init__(self) -> None:
         # Connect to DB and create a cursor
@@ -171,12 +174,13 @@ class AddPage(BoxLayout):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
     
-    def add_button_pressed(self, email_widget, pass_widget, mobile_no_widget, account_widget, name_widget, ptr_to_list_grid):
+    def add_button_pressed(self, email_widget, pass_widget, mobile_no_widget, account_widget, name_widget):
         """
         Arguments: TextInput Widget of Email Address, Password, Mobile Number, Account Address, First Name and Last name
         
         Check text inputs. If they are not empty, and they are valid, create a new account info.
         """
+
 
         # Get text from TextInput widgets
         email_str = email_widget.text
@@ -185,13 +189,16 @@ class AddPage(BoxLayout):
         account_str = account_widget.text
         name_str = name_widget.text
         print("add pressed", email_str, pass_str, mobile_no_str, account_str, name_str)
-        
+        print(self.parent.parent.children[1].children[2].children[0].children[1])
         # Check validity
         if email_str and pass_str and mobile_no_str and account_str and name_str:
             # Create the new account info
             db_object.add_new_account(name_str, email_str, mobile_no_str, account_str, pass_str)
             
-            # Add new row to the scrollview's list
+            # Add new row to the DB_JOURNAL's list so that when we go to the scrollview's tab,
+            # all of these rows are read by the scrollview and added to the RecordsGridLayout's list
+            # and displayed.
+            DB_JOURNAL.append([name_str, email_str, mobile_no_str, account_str, pass_str])
 
 
             # Clear TextInput forms
@@ -200,6 +207,8 @@ class AddPage(BoxLayout):
             mobile_no_widget.text = ""
             account_widget.text = ""
             name_widget.text = ""
+            
+            
         else:
             self._show_error_()
 
@@ -217,7 +226,28 @@ class TabbedWindow(TabbedPanel):
     pass
 
 class ListTab(TabbedPanelItem):
-    pass
+    """
+        This is the tab that contains the list of account informations
+        
+    """
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+    
+    def _update_list(self, widget):
+        """
+            We keep a list of newly added account informations in DB_JOURNAL when AddTab is activated.
+            The moment ListTab is clicked, DB_JOURNAL list is read, and all the account informations are
+            added to the account information list in ListTab's page.
+            
+            widget: is the pointer to ListTab. We have to traverse its children to find RecordsGridLayout
+        """
+        
+        for row in DB_JOURNAL:
+            records_grid_layout = widget.children[0].children[0]
+            records_grid_layout.add_new_row(row)
+            
+        if len(DB_JOURNAL) > 0:
+            DB_JOURNAL.clear()
 
 class AddTab(TabbedPanelItem):
     pass
