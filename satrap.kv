@@ -1,4 +1,6 @@
 #:kivy 2.1.0
+#:import Factory kivy.factory.Factory
+
 <TabbedWindow>:
     do_default_tab: False
 
@@ -16,7 +18,24 @@
         AddPage:
     
 
+
 ##### Add page section
+
+<QuestionDropDown>:
+    max_height: dp(90)
+    
+<MyOption@SpinnerOption>:
+    height: dp(30)
+
+<MySpinner>:
+    dropdown_cls: 'QuestionDropDown'
+    option_cls: 'MyOption'
+
+
+<InputFormLabel>:
+    font_size: dp(14)
+    on_kv_post: self.on_pawn
+    font_name: "IranSans/IranSans.ttf"
 
 <AddPage>:
     padding: dp(20)
@@ -25,30 +44,68 @@
 
     InputEntryLayout:
         id: input_name
-        Label:
-            text:"Nam va Family"
+        InputFormLabel:
+            #text:"Nam va Family"
+            text: "نام و نام خانوادگی"
     InputEntryLayout:
         id: input_account
-        Label:
-            text:"Account"
+        InputFormLabel:
+            #text:"Account"
+            text:"آدرس اکانت"
     InputEntryLayout:
         id: input_mobile_no
-        Label:
-            text:"Mobile No"
+        InputFormLabel:
+            #text:"Mobile No"
+            text:"موبایل"
     InputEntryLayout:
         id: input_password
-        Label:
-            text:"Kalame Oboor"
+        InputFormLabel:
+            #text:"Kalame Oboor"
+            text:"پسورد"
     InputEntryLayout:
         id: input_email
-        Label:
-            text:"Email"
+        InputFormLabel:
+            #text:"Email"
+            text:"ایمیل"
+    InputEntryLayout:
+        id: input_birthdate
+        InputFormLabel:
+            #text:"birthdate"
+            text:"تاریخ تولد"
+    MySpinner:
+        id: q1
+        text: 'Question 1'
+        values: "What is the first name of your best friend in high school?", "What was the name of your first pet?", "What was the first thing you learned to cook?", "What was the first film you saw in the theater?", "Where did you go the first time you flew on a plane?", "What is the last name of your favorite elementary school teacher?"
+    TextInput:
+        id: q1_answer
+        multiline: False
+        write_tab: False
+
+    MySpinner:
+        id: q2
+        text: 'Question 2'
+        values: "What is your dream job?", "What is your favorite children's book?", "What was the model of your first car?", "What was your childhood nickname?", "Who was your favorite film star or character in school?", "Who was your favorite singer or band in high school?"
+    TextInput:
+        id: q2_answer
+        multiline: False
+        write_tab: False
+
+    MySpinner:
+        id: q3
+        text: "Question 3"
+        values: "In what city did your parents meet?", "What was the first name of your first boss?", "What is the name of the street where you grew up?", "What is the name of the first beach you visited?", "What was the first album that you purchased?", "What is the name of your favorite sports team?"  
+    TextInput:
+        id: q3_answer
+        multiline: False
+        write_tab: False
 
     ## Add button
     Button:
+        id: add_button
         text: "Add"
         # Pass all TextInput input texts
-        on_press: root.add_button_pressed(input_email.children[1], input_password.children[1], input_mobile_no.children[1], input_account.children[1], input_name.children[1])
+        on_press: root.add_button_pressed(input_email.children[1], input_password.children[1], input_mobile_no.children[1], input_account.children[1], input_name.children[1], q1.text, q1_answer.text, q2.text, q2_answer.text, q3.text, q3_answer.text, input_birthdate.children[1])
+
 
 # Each text input in input form
 <InputEntryLayout>:
@@ -57,10 +114,22 @@
     orientation: "horizontal"
     TextInput:
         multiline: False
+        write_tab: False
     
 
-
 ##### List page section
+
+#<MyPopup@Popup>:
+#    title: "my self!"
+#    auto_dismiss: False
+#    size_hint: 0.5, 0.5
+#    BoxLayout:
+#        orientation: "vertical"
+#        Label:
+#            text: "here goes data"
+#        Button:
+#            text: 'Close me!'
+#            on_release: root.dismiss()
 
 <ListPage>:
     orientation: "vertical"
@@ -73,11 +142,22 @@
         size_hint: 1, 0.1
         orientation: "horizontal"
         spacing: dp(5)
+
         TextInput:
+            id: search_text_input
             size_hint: 0.9, 1
+            focus: True
+            multiline: False
+            write_tab: False
+            text_validate_unfocus: False
+            on_text_validate: root.on_search_press(search_text_input)
+
         Button:
+            id: search_button
             size_hint: 0.1, 1
             text: "search"
+            on_press: root.on_search_press(search_text_input)
+
     RecordsHeadingLayout:
 
     ## ListBox
@@ -87,18 +167,7 @@
             size_hint: 1, None
             height: self.minimum_height                
             
-            #CDataLayout:
-            #CDataLayout:
-            #CDataLayout:
-            #CDataLayout:
-            #CDataLayout:
-            #CDataLayout:
-            #CDataLayout:
-            #CDataLayout:
-            #CDataLayout:
-            #CDataLayout:
-           
-
+            #CDataLayouts get added here
 
 
 <CDataLayout>:
@@ -108,41 +177,38 @@
     spacing: dp(5)
     padding: dp(5)
 
-    Button:
+    ImageButton:
+        id: copy_btn
         size_hint: None, None
         size: dp(40), dp(40)
         text: "C"
-    Button:
+        hover_image: "Images/copy_hover.png"
+        source: "Images/copy.png"
+
+    ImageButton:
         size_hint: None, None
         size: dp(40), dp(40)
+        id: delete_btn
         text: "D"
-    Button:
+        hover_image: "Images/remove_hover.png"
+        source: "Images/remove.png"
+    ImageButton:
         size_hint: None, None
+        id: info_btn
         size: dp(40), dp(40)
         text: "O"
+        source: "Images/magnifier.png"        
 
-    #Label:
-    #    size_hint: 0.6, 1.0
-    #    text: "bla bla"
-    #Button:
-    #    size_hint: 0.1, 1.0
-    #    text: "copy"
-    #Button:
-    #    size_hint: 0.1, 1.0
-    #    text: "observer"
-    #Button:
-    #    size_hint: 0.1, 1.0
-    #    text: "delete"
-    #Button:
-    #    size_hint: 0.1, 1.0
-    #    text: ".-."
 
-<RecordsHeadingLabel@Label>:
+<RecordsHeadingLabel>:
     size_hint: 0.2, 1.0
     bold: True
     font_size: dp(20)
     outline_color: 0,0,0,1
     outline_width: 1
+    on_kv_post: self.on_pawn
+    font_name: "IranSans/IranSans.ttf"
+
     canvas:
         Color:
             rgba: 0,0,0,1
@@ -157,29 +223,27 @@
     padding: dp(5)
 
     # A place holder for aligning rows with the heading
-    
     RecordsHeadingLabel:
         size_hint: None, None
         size: dp(130), dp(40)
         disabled: True
-        text: "Actions"
-    #Button:
-    #    size_hint: None, None
-    #    size: dp(130), dp(40)
-    #    disabled: True
-        
+        #text: "Actions"
+        text: "اعمال"
 
     RecordsHeadingLabel:
-        text: "Name"
+        #text: "Name"
+        text: "نام"
        
     RecordsHeadingLabel:
-        text: "Email"
+        #text: "Email"#get_display(arabic_reshaper.reshape(u"ایمیل")) or "hello"
+        text: "ایمیل"
           
     RecordsHeadingLabel:
-        text: "Phone"
-        
+        #text: "Phone"
+        text: "شماره تلفن"
+
     RecordsHeadingLabel:
-        text: "Account"
+        text: "آدرس اکانت"
             
     RecordsHeadingLabel:
-        text: "Password"
+        text: "پسورد"
