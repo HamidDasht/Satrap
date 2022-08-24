@@ -1,12 +1,18 @@
-from kivy.uix.label import Label
-from kivy.uix.button import Button
-from kivy.properties import BooleanProperty, ObjectProperty, StringProperty
-from kivy.core.window import Window
-from kivy.uix.image import Image
+from kivy.uix.label     import Label
+from kivy.uix.button    import Button
+from kivy.properties    import BooleanProperty, ObjectProperty, StringProperty
+from kivy.core.window   import Window
+from kivy.uix.image     import Image
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.popup import Popup
-from kivy.metrics import dp
+from kivy.uix.popup     import Popup
+from kivy.metrics       import dp
+from dbconnection       import DBConnection
+
+import os
+import pyperclip
+import utilities
+
 
 class HoverBehavior(object):
     """Hover behavior.
@@ -63,38 +69,15 @@ class ImageButton(ButtonBehavior, Image, HoverBehavior):
     
     def more_info_pressed(self):
         cdatalayout = self.parent
-        info_popup = Popup( size_hint=(0.5, 0.5), auto_dismiss=False)
-        info_popup.title = cdatalayout.name
-
-        info_boxlayout = BoxLayout(orientation="vertical")
-        info_boxlayout.add_widget(Label(text=cdatalayout.q1))
-        info_boxlayout.add_widget(Label(text=cdatalayout.q2))
-        info_boxlayout.add_widget(Label(text=cdatalayout.q3))
-        info_boxlayout.add_widget(Button(text="Close", on_release=info_popup.dismiss))
-        
-        info_popup.add_widget(info_boxlayout)
-        info_popup.open()
+        utilities.show_info_popup(cdatalayout)
 
     def delete_pressed(self):
         cdatalayout = self.parent
-        delete_popup = Popup( size_hint=(0.5, 0.5), auto_dismiss=False)
-        delete_popup.title = cdatalayout.name
-
-        delete_outer_boxlayout = BoxLayout(orientation="vertical")
-        delete_outer_boxlayout.add_widget(Label(text="Sure?"))
-        
-        delete_inner_boxlayout = BoxLayout(orientation="horizontal", size_hint=(1,None), height=dp(40))
-        delete_inner_boxlayout.add_widget(Button(text="Yes"))
-        delete_inner_boxlayout.add_widget(Button(text="No", on_release=delete_popup.dismiss))
-
-        delete_outer_boxlayout.add_widget(delete_inner_boxlayout)
-
-        delete_popup.add_widget(delete_outer_boxlayout)
-        delete_popup.open()
+        utilities.show_delete_popup(cdatalayout)
 
     def copy_print_pressed(self):
         cdatalayout = self.parent
-
+        utilities.to_printer_and_clipbaord(cdatalayout)
 
     def on_press(self):
 

@@ -52,11 +52,6 @@ class DBConnection():
         """
             Creates a new row in 'account_info' table using provided arguments
         """
-        
-        #query = f"""INSERT INTO account_info (name, email, phone, account, password, q1, q2, q3, birthdate) 
-        #            VALUES('{name}', '{email}', '{phone}', '{account}', '{password}', '{q1}', '{q2}', '{q3}', '{birthdate}')"""
-        #print(query)
-        #self.cursor.execute(query)
 
         self.cursor.execute("""INSERT INTO account_info (name, email, phone, account, password, q1, q2, q3, birthdate) 
                     VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)""", (name, email, phone, account, password, q1, q2, q3, birthdate))
@@ -74,6 +69,10 @@ class DBConnection():
         query = "SELECT name, email, phone, account, password, q1, q2, q3, birthdate FROM account_info"
         self.cursor.execute(query)
         return  self.cursor.fetchall()
+
+    def delete_record(self, name, email, phone, account, password):
+        self.cursor.execute("""DELETE FROM account_info WHERE name = ? AND email = ? AND
+        phone = ? AND account = ? AND password = ?;""", (name, email, phone, account, password))
 
     def close_db_connection(self):
         """
@@ -108,3 +107,5 @@ class DBConnection():
         
         self.cursor.execute(query)
         return  self.cursor.fetchall()
+
+
