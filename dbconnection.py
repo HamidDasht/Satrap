@@ -3,6 +3,15 @@ import sqlite3
 DBNAME = "satrap_test.db"
 
 class DBConnection():
+    """
+    A singleton class for managing DB connection
+    """
+    def __new__(cls):
+        if not hasattr(cls, 'instance'):
+            cls.instance = super(DBConnection, cls).__new__(cls)
+        return cls.instance
+
+
     def __init__(self) -> None:
         # Connect to DB and create a cursor
         self.sqliteConnection = sqlite3.connect(DBNAME)
@@ -73,6 +82,7 @@ class DBConnection():
     def delete_record(self, name, email, phone, account, password):
         self.cursor.execute("""DELETE FROM account_info WHERE name = ? AND email = ? AND
         phone = ? AND account = ? AND password = ?;""", (name, email, phone, account, password))
+        self.sqliteConnection.commit()
 
     def close_db_connection(self):
         """

@@ -1,14 +1,17 @@
+from os import remove
 from kivy.uix.label     import Label
 from kivy.uix.popup     import Popup
 from kivy.uix.button    import Button
 from kivy.uix.boxlayout import BoxLayout
 from kivy.metrics       import dp
 from dbconnection       import DBConnection
+from functools          import partial
 
 import pyperclip
 import win32ui
 import win32print
 import win32con
+
 
 def _getfontsize_(dc, PointSize):
     inch_y = dc.GetDeviceCaps(win32con.LOGPIXELSY)
@@ -50,14 +53,20 @@ def show_delete_popup(cdatalayout):
     delete_outer_boxlayout.add_widget(Label(text="Sure?"))
     
     delete_inner_boxlayout = BoxLayout(orientation="horizontal", size_hint=(1,None), height=dp(40))
-    # delete_inner_boxlayout.add_widget(Button(text="Yes"), on_release=DBConnection.delete_record(
-    #     cdatalayout.name,
-    #     cdatalayout.email,
-    #     cdatalayout.phone,
-    #     cdatalayout.account,
-    #     cdatalayout.password
-    # ))
-    delete_inner_boxlayout.add_widget(Button(text="Yes"))
+    reference_to_singleton_db = DBConnection()
+
+    def remove_from_scroll_view(_):
+        delete_popup.dismiss()
+        grid_layout = cdatalayout.parent
+        grid_layout.remove_widget(cdatalayout)
+
+    delete_inner_boxlayout.add_widget(Button(text="Yes", on_press=lambda _ : reference_to_singleton_db.delete_record(
+        cdatalayout.name,
+        cdatalayout.email,
+        cdatalayout.phone,
+        cdatalayout.account,
+        cdatalayout.password
+    ), on_release=remove_from_scroll_view))
     delete_inner_boxlayout.add_widget(Button(text="No", on_release=delete_popup.dismiss))
 
     delete_outer_boxlayout.add_widget(delete_inner_boxlayout)
@@ -101,7 +110,7 @@ def to_printer_and_clipbaord(cdatalayout):
     except Exception:
         print(Exception)
 
-        clipboard_str = f"""
+    clipboard_str = f"""
 {'Name:':11}{cdatalayout.name}
 {'Email:':11}{cdatalayout.email}
 {'Phone:':11}{cdatalayout.phone}
