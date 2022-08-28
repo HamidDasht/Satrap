@@ -14,6 +14,8 @@ from bidi.algorithm import get_display
 from kivy.core.window import Window
 from image_button import ImageButton
 from kivy.uix.behaviors import FocusBehavior
+import os, sys
+from kivy.resources import resource_add_path, resource_find
 
 
 Q1_OPTIONS = \
@@ -361,7 +363,8 @@ class MySpinner(Spinner, FocusBehavior):
         #self.value = self.values[0]
 
 if __name__ == '__main__':
-
+    if hasattr(sys, '_MEIPASS'):
+        resource_add_path(os.path.join(sys._MEIPASS))
     try:
         #print(dir(Window))
         SatrapApp().run()

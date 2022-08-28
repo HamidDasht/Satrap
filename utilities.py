@@ -29,6 +29,7 @@ def show_info_popup(cdatalayout):
     q1, q1_ans = cdatalayout.q1.split(':')[0:2]
     q2, q2_ans = cdatalayout.q2.split(':')[0:2]
     q3, q3_ans = cdatalayout.q2.split(':')[0:2]
+    birthdate = f'Birth Date: {cdatalayout.birthdate}'
     
     info_boxlayout.add_widget(Label(text=q1, text_size = (450,None), shorten=True))
     info_boxlayout.add_widget(Label(text=q1_ans, text_size = (450,None), shorten=True))
@@ -36,6 +37,7 @@ def show_info_popup(cdatalayout):
     info_boxlayout.add_widget(Label(text=q2_ans, text_size = (450,None), shorten=True))
     info_boxlayout.add_widget(Label(text=q3, text_size = (450,None), shorten=True))
     info_boxlayout.add_widget(Label(text=q3_ans, text_size = (450,None), shorten=True))
+    info_boxlayout.add_widget(Label(text=birthdate, text_size = (450,None), shorten=True))
     info_boxlayout.add_widget(Button(text="Close", on_release=info_popup.dismiss))
     
     info_popup.add_widget(info_boxlayout)
@@ -94,15 +96,17 @@ def to_printer_and_clipbaord(cdatalayout):
         hDC.TextOut(500,1200, "Email:     " + cdatalayout.email)
         hDC.TextOut(500,1400, "Phone:    " + cdatalayout.phone)
         hDC.TextOut(500,1600, "Account:  " + cdatalayout.account)
-        hDC.TextOut(500,1800, "----------------------------------")
-        hDC.TextOut(500,2000, "Password: " + cdatalayout.password)
+        hDC.TextOut(500,1800, "Birthdate: " + cdatalayout.birthdate)
+        hDC.TextOut(500,2000, "----------------------------------")
+        hDC.TextOut(500,2200, "Password: " + cdatalayout.password)
 
-        hDC.TextOut(500,2200, "Q1:       " + cdatalayout.q1.split(':')[0])
-        hDC.TextOut(500,2400, "             " + cdatalayout.q1.split(':')[1])
-        hDC.TextOut(500,2600, "Q2:       " + cdatalayout.q2.split(':')[0])
-        hDC.TextOut(500,2800, "             " + cdatalayout.q2.split(':')[1])
-        hDC.TextOut(500,3000, "Q3:       " + cdatalayout.q3.split(':')[0])
-        hDC.TextOut(500,3200, "             " + cdatalayout.q3.split(':')[1])
+        hDC.TextOut(500,2400, "Q1:       " + cdatalayout.q1.split(':')[0])
+        hDC.TextOut(500,2600, "             " + cdatalayout.q1.split(':')[1])
+        hDC.TextOut(500,2800, "Q2:       " + cdatalayout.q2.split(':')[0])
+        hDC.TextOut(500,3000, "             " + cdatalayout.q2.split(':')[1])
+        hDC.TextOut(500,3200, "Q3:       " + cdatalayout.q3.split(':')[0])
+        hDC.TextOut(500,3400, "             " + cdatalayout.q3.split(':')[1])
+        
 
         
         hDC.EndPage()
@@ -115,6 +119,7 @@ def to_printer_and_clipbaord(cdatalayout):
 {'Email:':11}{cdatalayout.email}
 {'Phone:':11}{cdatalayout.phone}
 {'Account:':11}{cdatalayout.account}
+{'Birthdate:':11}{cdatalayout.birthdate}
 ----------------------------------
 {'Password:':11}{cdatalayout.password}
 {'Q1:':11}{cdatalayout.q1.split(':')[0]}
