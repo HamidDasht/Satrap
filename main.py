@@ -99,7 +99,7 @@ class CDataLayout(BoxLayout):
         if self.name.isascii():
             name_label = Label(text=self.name)
         else:
-            name_label = Label(text=get_display(arabic_reshaper.reshape(self.name)), font_name="IranSans/IranSans.ttf")
+            name_label = Label(text=get_display(arabic_reshaper.reshape(self.name)), font_name="Fonts/IranSans.ttf")
         
         self.add_widget(name_label)
         self.add_widget(Label(text=self.email))
@@ -183,9 +183,9 @@ class AddPage(BoxLayout):
         account_str = account_widget.text
         name_str = name_widget.text
         birthdate = birthdate_widget.text
-        q1_str = f'{q1}:{q1_answer}'
-        q2_str = f'{q2}:{q2_answer}'
-        q3_str = f'{q3}:{q3_answer}'
+        q1_str = f'{q1}:{q1_answer.text}'
+        q2_str = f'{q2}:{q2_answer.text}'
+        q3_str = f'{q3}:{q3_answer.text}'
         print("add pressed", email_str, pass_str, mobile_no_str, account_str, name_str, birthdate, q1_str, q2_str, q3_str)
         
         # Check validity
@@ -205,6 +205,9 @@ class AddPage(BoxLayout):
             account_widget.text = ""
             name_widget.text = ""
             birthdate_widget.text = ""
+            q1_answer.text = ""
+            q2_answer.text = ""
+            q3_answer.text = ""
         else:
             self._show_error_()
 

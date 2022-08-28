@@ -35,7 +35,7 @@
 <InputFormLabel>:
     font_size: dp(14)
     on_kv_post: self.on_pawn
-    font_name: "IranSans/IranSans.ttf"
+    font_name: "Fonts/IranSans.ttf"
 
 <AddPage>:
     padding: dp(20)
@@ -104,7 +104,7 @@
         id: add_button
         text: "Add"
         # Pass all TextInput input texts
-        on_press: root.add_button_pressed(input_email.children[1], input_password.children[1], input_mobile_no.children[1], input_account.children[1], input_name.children[1], q1.text, q1_answer.text, q2.text, q2_answer.text, q3.text, q3_answer.text, input_birthdate.children[1])
+        on_press: root.add_button_pressed(input_email.children[1], input_password.children[1], input_mobile_no.children[1], input_account.children[1], input_name.children[1], q1.text, q1_answer, q2.text, q2_answer, q3.text, q3_answer, input_birthdate.children[1])
 
 
 # Each text input in input form
@@ -208,7 +208,7 @@
     outline_color: 0,0,0,1
     outline_width: 1
     on_kv_post: self.on_pawn
-    font_name: "IranSans/IranSans.ttf"
+    font_name: "Fonts/IranSans.ttf"
 
     canvas:
         Color:
