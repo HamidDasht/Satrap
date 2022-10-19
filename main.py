@@ -1,4 +1,8 @@
+from ctypes import alignment
 import enum
+from textwrap import shorten
+from turtle import width
+from unicodedata import name
 from kivy.properties import StringProperty
 from kivy.app import App
 from kivy.core.window import Window
@@ -99,16 +103,40 @@ class CDataLayout(BoxLayout):
 
         # If name is written in Persian, render it in Persian
         if self.name.isascii():
-            name_label = Label(text=self.name)
+            name_label = Label(text=self.name, halign="center")
         else:
-            name_label = Label(text=get_display(arabic_reshaper.reshape(self.name)), font_name="Fonts/IranSans.ttf")
+            name_label = Label(text=get_display(arabic_reshaper.reshape(self.name)), font_name="Fonts/IranSans.ttf", halign="center")
         
-        self.add_widget(name_label)
-        self.add_widget(Label(text=self.email))
-        self.add_widget(Label(text=self.phone))
-        self.add_widget(Label(text=self.account))
-        self.add_widget(Label(text=self.password))
+        name_label.shorten = True
+        name_label.size_hint = (1,1)
+        name_label.text_size = (name_label.width, None)
+        email_label = Label(text=self.email, text_size=(100, None), shorten=True, halign="center")
+        phone_label = Label(text=self.phone, text_size=(100, None), shorten=True, halign="center")
+        account_label =Label(text=self.account, text_size=(100, None), shorten=True, halign="center")
+        password_label = Label(text=self.password, text_size=(100, None), shorten=True, halign="center")
 
+        name_label.bind(size=self.on_resize)
+        email_label.bind(size=self.on_resize)
+        phone_label.bind(size=self.on_resize)
+        account_label.bind(size=self.on_resize)
+        password_label.bind(size=self.on_resize)
+
+        self.add_widget(name_label)
+        self.add_widget(email_label)
+        self.add_widget(phone_label)
+        self.add_widget(account_label)
+        self.add_widget(password_label)
+
+
+    def on_resize(self, prev_label, new_label_size):
+        print(self,new_label_size)
+        #new_label.text_size = new_label.width
+        # print(_, __)
+        for child in self.children:
+             if type(child) is Label:
+                     child.text_size = (child.width, None)
+        
+        
 
 class InputEntryLayout(BoxLayout):
     pass

@@ -11,7 +11,6 @@ class DBConnection():
             cls.instance = super(DBConnection, cls).__new__(cls)
         return cls.instance
 
-
     def __init__(self) -> None:
         # Connect to DB and create a cursor
         self.sqliteConnection = sqlite3.connect(DBNAME)

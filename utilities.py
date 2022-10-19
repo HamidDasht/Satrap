@@ -22,7 +22,7 @@ def show_info_popup(cdatalayout):
     """
     Shows a popup that contains cdatalayout's Q1 thorugh Q3 along with answers
     """
-    info_popup = Popup( size_hint=(None, None), size=(dp(500),dp(300)), auto_dismiss=False)
+    info_popup = Popup( size_hint=(None, None), size=(dp(600),dp(400)), auto_dismiss=False)
     info_popup.title = f"Questions For {cdatalayout.account} Account "
     
     info_boxlayout = BoxLayout(orientation="vertical")
@@ -30,14 +30,24 @@ def show_info_popup(cdatalayout):
     q2, q2_ans = cdatalayout.q2.split(':')[0:2]
     q3, q3_ans = cdatalayout.q2.split(':')[0:2]
     birthdate = f'Birth Date: {cdatalayout.birthdate}'
+    name = f'Name: {cdatalayout.name}'
+    email = f'Email: {cdatalayout.email}'
+    phone = f'Phone: {cdatalayout.phone}'
+    account = f'Account: {cdatalayout.account}'
     
-    info_boxlayout.add_widget(Label(text=q1, text_size = (450,None), shorten=True))
-    info_boxlayout.add_widget(Label(text=q1_ans, text_size = (450,None), shorten=True))
-    info_boxlayout.add_widget(Label(text=q2, text_size = (450,None), shorten=True))
-    info_boxlayout.add_widget(Label(text=q2_ans, text_size = (450,None), shorten=True))
-    info_boxlayout.add_widget(Label(text=q3, text_size = (450,None), shorten=True))
-    info_boxlayout.add_widget(Label(text=q3_ans, text_size = (450,None), shorten=True))
-    info_boxlayout.add_widget(Label(text=birthdate, text_size = (450,None), shorten=True))
+    info_boxlayout.add_widget(Label(text=q1, text_size = (550,None), shorten=True))
+    info_boxlayout.add_widget(Label(text=q1_ans, text_size = (550,None), shorten=True))
+    info_boxlayout.add_widget(Label(text=q2, text_size = (550,None), shorten=True))
+    info_boxlayout.add_widget(Label(text=q2_ans, text_size = (550,None), shorten=True))
+    info_boxlayout.add_widget(Label(text=q3, text_size = (550,None), shorten=True))
+    info_boxlayout.add_widget(Label(text=q3_ans, text_size = (550,None), shorten=True))
+    info_boxlayout.add_widget(Label(text=birthdate, text_size = (550,None), shorten=True))
+
+    info_boxlayout.add_widget(Label(text=name, text_size = (550,None), shorten=True))
+    info_boxlayout.add_widget(Label(text=email, text_size = (550,None), shorten=True))
+    info_boxlayout.add_widget(Label(text=phone, text_size = (550,None), shorten=True))
+    info_boxlayout.add_widget(Label(text=account, text_size = (550,None), shorten=True))
+    
     info_boxlayout.add_widget(Button(text="Close", on_release=info_popup.dismiss))
     
     info_popup.add_widget(info_boxlayout)
@@ -106,8 +116,6 @@ def to_printer_and_clipbaord(cdatalayout):
         hDC.TextOut(500,3000, "             " + cdatalayout.q2.split(':')[1])
         hDC.TextOut(500,3200, "Q3:       " + cdatalayout.q3.split(':')[0])
         hDC.TextOut(500,3400, "             " + cdatalayout.q3.split(':')[1])
-        
-
         
         hDC.EndPage()
         hDC.EndDoc()
